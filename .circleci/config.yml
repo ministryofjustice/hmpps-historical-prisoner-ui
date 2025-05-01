@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  hmpps: ministryofjustice/hmpps@10
+  hmpps: ministryofjustice/hmpps@11
   slack: circleci/slack@4
 parameters:
   releases-slack-channel:
@@ -9,7 +9,7 @@ parameters:
     default: dps-releases
   node-version:
     type: string
-    default: 22.14-browsers
+    default: 22.15-browsers
 
 jobs:
   build:
@@ -37,6 +37,7 @@ jobs:
       - run: # Run linter after build because the integration test code depend on compiled typescript...
           name: Linter check
           command: npm run lint
+          chart_name: hmpps-historical-prisoner
       - persist_to_workspace:
           root: .
           paths:
@@ -73,7 +74,7 @@ jobs:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
           name: Get wiremock
-          command: curl -o wiremock.jar https://repo1.maven.org/maven2/org/wiremock/wiremock-standalone/3.12.1/wiremock-standalone-3.12.1.jar
+          command: curl -o wiremock.jar https://repo1.maven.org/maven2/org/wiremock/wiremock-standalone/3.13.0/wiremock-standalone-3.13.0.jar
       - run:
           name: Run wiremock
           command: java -jar wiremock.jar --port 9091
@@ -113,8 +114,10 @@ workflows:
             - build
       - hmpps/helm_lint:
           name: helm_lint
+          chart_name: hmpps-historical-prisoner
       - hmpps/build_docker:
           name: build_docker
+          image_name: hmpps-historical-prisoner
           filters:
             branches:
               only:
@@ -126,6 +129,9 @@ workflows:
           pipeline_id: <<pipeline.id>>
           pipeline_number: <<pipeline.number>>
           context: hmpps-common-vars
+          release_name: hmpps-historical-prisoner
+          chart_name: hmpps-historical-prisoner
+          k8s_deployment_name: hmpps-historical-prisoner
           filters:
             branches:
               only:
@@ -150,6 +156,9 @@ workflows:
           context:
             - hmpps-common-vars
             - hmpps-historical-prisoner-preprod
+          release_name: hmpps-historical-prisoner
+          chart_name: hmpps-historical-prisoner
+          k8s_deployment_name: hmpps-historical-prisoner
           requires:
             - request-preprod-approval
           helm_timeout: 5m
@@ -165,6 +174,9 @@ workflows:
           pipeline_id: <<pipeline.id>>
           pipeline_number: <<pipeline.number>>
           slack_notification: true
+          release_name: hmpps-historical-prisoner
+          chart_name: hmpps-historical-prisoner
+          k8s_deployment_name: hmpps-historical-prisoner
           context:
             - hmpps-common-vars
             - hmpps-historical-prisoner-prod
