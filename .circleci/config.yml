@@ -37,6 +37,7 @@ jobs:
       - run: # Run linter after build because the integration test code depend on compiled typescript...
           name: Linter check
           command: npm run lint
+          chart_name: hmpps-historical-prisoner
       - persist_to_workspace:
           root: .
           paths:
@@ -113,8 +114,10 @@ workflows:
             - build
       - hmpps/helm_lint:
           name: helm_lint
+          chart_name: hmpps-historical-prisoner
       - hmpps/build_docker:
           name: build_docker
+          image_name: hmpps-historical-prisoner
           filters:
             branches:
               only:
@@ -126,6 +129,9 @@ workflows:
           pipeline_id: <<pipeline.id>>
           pipeline_number: <<pipeline.number>>
           context: hmpps-common-vars
+          release_name: hmpps-historical-prisoner
+          chart_name: hmpps-historical-prisoner
+          k8s_deployment_name: hmpps-historical-prisoner
           filters:
             branches:
               only:
@@ -150,6 +156,9 @@ workflows:
           context:
             - hmpps-common-vars
             - hmpps-historical-prisoner-preprod
+          release_name: hmpps-historical-prisoner
+          chart_name: hmpps-historical-prisoner
+          k8s_deployment_name: hmpps-historical-prisoner
           requires:
             - request-preprod-approval
           helm_timeout: 5m
@@ -165,6 +174,9 @@ workflows:
           pipeline_id: <<pipeline.id>>
           pipeline_number: <<pipeline.number>>
           slack_notification: true
+          release_name: hmpps-historical-prisoner
+          chart_name: hmpps-historical-prisoner
+          k8s_deployment_name: hmpps-historical-prisoner
           context:
             - hmpps-common-vars
             - hmpps-historical-prisoner-prod
