@@ -1,12 +1,12 @@
 generic-service:
-  nameOverride: hmpps-historical-prisoner
+  nameOverride: hmpps-historical-prisoner-ui
   productId: 'DPS065'
   serviceAccountName: "hmpps-historical-prisoner"
 
   replicaCount: 4
 
   image:
-    repository: quay.io/hmpps/hmpps-historical-prisoner
+    repository: ghcr.io/ministryofjustice/hmpps-historical-prisoner-ui
     tag: app_version # override at deployment time
     port: 3000
 
@@ -53,15 +53,17 @@ generic-service:
     REDIS_TLS_ENABLED: 'true'
     TOKEN_VERIFICATION_ENABLED: 'true'
     AUDIT_SQS_REGION: 'eu-west-2'
-    AUDIT_SERVICE_NAME: 'hmpps-historical-prisoner'
-    GOTENBERG_API_URL: 'http://hmpps-historical-prisoner-gotenberg'
+    AUDIT_SERVICE_NAME: 'hmpps-historical-prisoner-ui'
+    GOTENBERG_API_URL: 'http://hmpps-historical-prisoner-ui-gotenberg'
 
   namespace_secrets:
-    application-insights:
+    hmpps-historical-prisoner-ui-application-insights:
       APPLICATIONINSIGHTS_CONNECTION_STRING: "APPLICATIONINSIGHTS_CONNECTION_STRING"
-    hmpps-historical-prisoner:
+
+    hmpps-historical-prisoner-ui-auth-code:
       AUTH_CODE_CLIENT_ID: 'AUTH_CODE_CLIENT_ID'
       AUTH_CODE_CLIENT_SECRET: 'AUTH_CODE_CLIENT_SECRET'
+    hmpps-historical-prisoner-ui-session-secret:
       SESSION_SECRET: 'SESSION_SECRET'
     elasticache-redis:
       REDIS_HOST: 'primary_endpoint_address'
@@ -74,7 +76,7 @@ generic-service:
       - internal
 
 generic-prometheus-alerts:
-  targetApplication: hmpps-historical-prisoner
+  targetApplication: hmpps-historical-prisoner-ui
   alertSeverity: syscon
 
 gotenberg:
