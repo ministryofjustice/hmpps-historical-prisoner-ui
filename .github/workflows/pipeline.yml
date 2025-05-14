@@ -19,7 +19,8 @@ permissions:
   contents: read
   packages: write
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  # only cancel in progress when on a branch - use SHA on main to ensure uniqueness
+  group: ${{ github.workflow }}-${{ github.ref == 'refs/heads/main' && github.sha || github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 jobs:
   node_build:
