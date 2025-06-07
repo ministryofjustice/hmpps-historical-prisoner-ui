@@ -7,7 +7,9 @@ export default function setupBackToTop() {
   new BackToTop(backToTop).init()
 }
 
-BackToTop.prototype.init = function () {
+BackToTop.prototype.init = init
+
+function init() {
   if (!this.$module) {
     return
   }
@@ -16,61 +18,56 @@ BackToTop.prototype.init = function () {
   if (!('IntersectionObserver' in window)) {
     // If there's no support fallback to regular behaviour
     // Since JavaScript is enabled we can remove the default hidden state
-    return this.$module.classList.remove('hmpps-back-to-top--hidden')
+    this.$module.classList.remove('hmpps-back-to-top--hidden')
+    return
   }
 
-  var $h1 = document.querySelector('h1')
-  var $footer = document.querySelector('.connect-dps-common-footer') ?? document.querySelector('.govuk-footer')
-  var $sidebar = document.querySelector('.app-sidebar')
+  const $h1 = document.querySelector('h1')
+  const $footer = document.querySelector('.connect-dps-common-footer') || document.querySelector('.govuk-footer')
+  const $sidebar = document.querySelector('.app-sidebar')
 
   // Check if there is anything to observe
   if (!$h1 || !$footer || !$sidebar) {
     return
   }
 
-  var h1IsIntersecting = false
-  var footerIsIntersecting = false
-  var sidebarIsIntersecting = false
+  let h1IsIntersecting = false
+  let footerIsIntersecting = false
+  let sidebarIsIntersecting = false
 
-  var observer = new window.IntersectionObserver(
-    function (entries) {
-      // Find the elements we care about from the entries
-      var h1Entry = entries.find(function (entry) {
-        return entry.target === $h1
-      })
-      var footerEntry = entries.find(function (entry) {
-        return entry.target === $footer
-      })
-      var sidebarEntry = entries.find(function (entry) {
-        return entry.target === $sidebar
-      })
+  const observer = new window.IntersectionObserver(intersectionObserver.bind(this))
 
-      // If there is an entry this means the element has changed so lets check if it's intersecting.
-      if (h1Entry) {
-        h1IsIntersecting = h1Entry.isIntersecting
-      }
-      if (footerEntry) {
-        footerIsIntersecting = footerEntry.isIntersecting
-      }
-      if (sidebarEntry) {
-        sidebarIsIntersecting = sidebarEntry.isIntersecting
-      }
+  function intersectionObserver(entries) {
+    // Find the elements we care about from the entries
+    const h1Entry = entries.find(entry => entry.target === $h1)
+    const footerEntry = entries.find(entry => entry.target === $footer)
+    const sidebarEntry = entries.find(entry => entry.target === $sidebar)
 
-      // If the sidebar or h1 is visible then hide the back to top link as it's not required
-      if (sidebarIsIntersecting || h1IsIntersecting) {
-        this.$module.classList.remove('hmpps-back-to-top--fixed')
-        this.$module.classList.add('hmpps-back-to-top--hidden')
-        // If the footer is visible then set the back to top link at the bottom
-      } else if (footerIsIntersecting) {
-        this.$module.classList.remove('hmpps-back-to-top--fixed')
-        this.$module.classList.remove('hmpps-back-to-top--hidden')
-        // If the sidebar and the footer are both hidden then make the back to top link sticky to follow the user
-      } else {
-        this.$module.classList.remove('hmpps-back-to-top--hidden')
-        this.$module.classList.add('hmpps-back-to-top--fixed')
-      }
-    }.bind(this),
-  )
+    // If there is an entry this means the element has changed so lets check if it's intersecting.
+    if (h1Entry) {
+      h1IsIntersecting = h1Entry.isIntersecting
+    }
+    if (footerEntry) {
+      footerIsIntersecting = footerEntry.isIntersecting
+    }
+    if (sidebarEntry) {
+      sidebarIsIntersecting = sidebarEntry.isIntersecting
+    }
+
+    // If the sidebar or h1 is visible then hide the back to top link as it's not required
+    if (sidebarIsIntersecting || h1IsIntersecting) {
+      entries.$module.classList.remove('hmpps-back-to-top--fixed')
+      entries.$module.classList.add('hmpps-back-to-top--hidden')
+      // If the footer is visible then set the back to top link at the bottom
+    } else if (footerIsIntersecting) {
+      entries.$module.classList.remove('hmpps-back-to-top--fixed')
+      entries.$module.classList.remove('hmpps-back-to-top--hidden')
+      // If the sidebar and the footer are both hidden then make the back to top link sticky to follow the user
+    } else {
+      entries.$module.classList.remove('hmpps-back-to-top--hidden')
+      entries.$module.classList.add('hmpps-back-to-top--fixed')
+    }
+  }
 
   observer.observe($h1)
   observer.observe($footer)
