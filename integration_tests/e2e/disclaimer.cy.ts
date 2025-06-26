@@ -12,7 +12,7 @@ context('Sign In', () => {
 
   it('Will show the disclaimer text', () => {
     Page.verifyOnPage(DisclaimerPage)
-    cy.title().should('eq', 'Usage')
+    cy.title().should('eq', 'Usage - FORCE TEST ERROR')
   })
 
   it('Will provide a checkbox that is unchecked', () => {
