@@ -52,7 +52,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: npm_unit_test_artifacts
-          path: test-results
+          path: test_results
       - name: publish test report
         if: ${{ !cancelled() }}
         uses: dorny/test-reporter@v2
