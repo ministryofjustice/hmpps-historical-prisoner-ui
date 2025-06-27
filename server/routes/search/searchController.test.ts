@@ -158,6 +158,7 @@ describe('Search controller', () => {
         }),
       )
     })
+
     it('should audit details viewed', async () => {
       req.body = { searchType: 'name', lastName: 'WILSON' }
       req.session.searchParams = {}
