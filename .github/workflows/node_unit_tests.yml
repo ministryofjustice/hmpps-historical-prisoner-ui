@@ -63,6 +63,8 @@ jobs:
           reporter: java-junit
           fail-on-empty: false
           fail-on-error: false
+          list-suites: 'failed'
+          list-tests: 'failed'
       - name: fail the action if the tests failed
         if: ${{ steps.unit-tests.outcome == 'failure' }}
         uses: actions/github-script@v7
