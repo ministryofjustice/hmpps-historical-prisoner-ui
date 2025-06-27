@@ -1,7 +1,6 @@
-import { type RequestHandler, Router } from 'express'
+import { Router } from 'express'
 
-import asyncMiddleware from '../middleware/asyncMiddleware'
-import { Services } from '../services'
+import type { Services } from '../services'
 import disclaimerRoutes from './disclaimer/disclaimerRouter'
 import searchRoutes from './search/searchRouter'
 import printRoutes from './print/printRouter'
@@ -11,9 +10,8 @@ import suggestionsRoutes from './suggestions/suggestionsRouter'
 
 export default function routes({ auditService, historicalPrisonerService }: Services): Router {
   const router = Router()
-  const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
 
-  get('/', async (req, res, next) => {
+  router.get('/', async (req, res, next) => {
     return res.redirect('/search')
   })
 
