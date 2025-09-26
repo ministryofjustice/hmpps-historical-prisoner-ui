@@ -1,7 +1,7 @@
 import express from 'express'
 
 import createError from 'http-errors'
-import dpsComponents from '@ministryofjustice/hmpps-connect-dps-components'
+import { getFrontendComponents } from '@ministryofjustice/hmpps-connect-dps-components'
 import GotenbergClient from './data/gotenbergClient'
 
 import nunjucksSetup from './utils/nunjucksSetup'
@@ -23,6 +23,7 @@ import routes from './routes'
 import config from './config'
 import type { Services } from './services'
 import { pdfRenderer } from './utils/pdfRenderer'
+import logger from '../logger'
 
 export default function createApp(services: Services): express.Application {
   const app = express()
@@ -45,9 +46,11 @@ export default function createApp(services: Services): express.Application {
 
   app.use(
     '*any',
-    dpsComponents.getPageComponents({
-      includeSharedData: true,
+    getFrontendComponents({
+      logger,
+      componentApiConfig: config.componentApi,
       dpsUrl: config.dpsUrl,
+      requestOptions: { includeSharedData: true },
     }),
   )
 
