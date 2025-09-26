@@ -84,6 +84,15 @@ export default {
       enabled: get('TOKEN_VERIFICATION_ENABLED', 'false') === 'true',
     },
   },
+  // don't want this in apis as will need to provide a health check which isn't necessary as it has a fallback instead.
+  componentApi: {
+    url: get('COMPONENT_API_URL', 'http://localhost:8082', requiredInProduction),
+    timeout: {
+      response: Number(get('COMPONENT_TIMEOUT_RESPONSE', 10000)),
+      deadline: Number(get('COMPONENT_TIMEOUT_DEADLINE', 10000)),
+    },
+    agent: new AgentConfig(Number(get('COMPONENT_TIMEOUT_DEADLINE', 10000))),
+  },
   sqs: {
     audit: auditConfig(),
   },
