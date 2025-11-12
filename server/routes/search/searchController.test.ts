@@ -9,7 +9,7 @@ const historicalPrisonerService = new HistoricalPrisonerService(null) as jest.Mo
 const auditService = auditServiceMock()
 const controller = new SearchController(historicalPrisonerService, auditService)
 
-describe('Search controller', () => {
+describe('SearchPage controller', () => {
   let req: Request
   let res: Response
 
@@ -63,7 +63,7 @@ describe('Search controller', () => {
     } as unknown as Response
   })
 
-  describe('new Search', () => {
+  describe('new SearchPage', () => {
     it('should render the search page', async () => {
       await controller.clearSearch(req, res)
 
@@ -170,7 +170,7 @@ describe('Search controller', () => {
 
       expect(auditService.logPageView).toHaveBeenCalledWith('SEARCH_RESULTS', {
         who: 'user',
-        subjectId: 'Search by name',
+        subjectId: 'SearchPage by name',
         details: { prisonNumbers: ['BF123455', 'BF123455'] },
         correlationId: 'COR_ID',
       })

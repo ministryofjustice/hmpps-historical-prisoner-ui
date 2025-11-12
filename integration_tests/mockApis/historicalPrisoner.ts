@@ -92,7 +92,7 @@ const stubComparisonPrisonerDetail = (detail: { prisonNumber: string; lastName: 
   })
 
 export default {
-  stubHistoricalPrisonerPing: ping,
+  stubPing: ping,
   stubPrisonerSearchByName,
   stubPrisonerSearchByIdentifiers,
   stubPrisonerSearchByAddress,

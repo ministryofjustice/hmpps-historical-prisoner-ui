@@ -9,7 +9,7 @@ const historicalPrisonerService = new HistoricalPrisonerService(null) as jest.Mo
 const auditService = auditServiceMock()
 const controller = new DetailController(historicalPrisonerService, auditService)
 
-describe('Comparison controller', () => {
+describe('ComparisonPage controller', () => {
   let req: Request
   let res: Response
 

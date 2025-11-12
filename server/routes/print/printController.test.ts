@@ -10,7 +10,7 @@ const historicalPrisonerService = new HistoricalPrisonerService(null) as jest.Mo
 const auditService = auditServiceMock()
 const controller = new PrintController(historicalPrisonerService, auditService)
 
-describe('Print controller', () => {
+describe('PrintPage controller', () => {
   let req: Request
   let res: Response
 
