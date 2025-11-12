@@ -3,7 +3,7 @@ import DisclaimerController from './disclaimerController'
 
 const controller = new DisclaimerController()
 
-describe('DisclaimerPage controller', () => {
+describe('Disclaimer controller', () => {
   let req: Request
   let res: Response
 

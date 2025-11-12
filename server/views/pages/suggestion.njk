@@ -2,7 +2,7 @@
 
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = "SuggestionsPage and tips" %}
+{% set pageTitle = "Suggestions and tips" %}
 
 {% block beforeContent %}
   {{ govukBackLink({
@@ -15,14 +15,14 @@
 
   <div class="govuk-grid-row govuk-body">
     <div class="govuk-grid-column-full">
-      <h1 class="govuk-heading-l">SuggestionsPage and tips</h1>
+      <h1 class="govuk-heading-l">Suggestions and tips</h1>
 
       <div class="govuk-grid-column-two-thirds">
         {% for suggestion in suggestions %}
           {% if suggestion.type == 'useInitial' %}
             <div class="govuk-body-l" data-qa="use-initial">
               <a class="govuk-link" href="/suggestion?{{ suggestion.query }}">
-                SearchPage using an initial only in first name
+                Search using an initial only in first name
               </a>:
               <span>{{ suggestion.val }}</span>
               <p class="govuk-body">

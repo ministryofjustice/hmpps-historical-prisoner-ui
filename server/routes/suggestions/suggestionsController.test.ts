@@ -4,7 +4,7 @@ import SuggestionsController from './suggestionsController'
 
 const controller = new SuggestionsController()
 
-describe('SuggestionsPage controller', () => {
+describe('Suggestions controller', () => {
   let req: Request
   let res: Response
 

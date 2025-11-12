@@ -29,13 +29,13 @@
   },
   "engines": {
     "node": "^24",
-    "npm": "^10"
+    "npm": "^11"
   },
   "dependencies": {
-    "@aws-sdk/client-sqs": "^3.925.0",
+    "@aws-sdk/client-sqs": "^3.929.0",
     "@ministryofjustice/frontend": "^7.1.0",
     "@ministryofjustice/hmpps-auth-clients": "^1.0.0",
-    "@ministryofjustice/hmpps-connect-dps-components": "4.0",
+    "@ministryofjustice/hmpps-connect-dps-components": "5.2",
     "@ministryofjustice/hmpps-monitoring": "^1.0.0",
     "@ministryofjustice/hmpps-rest-client": "^1.0.0",
     "@playwright/test": "^1.56.1",
@@ -82,7 +82,7 @@
     "@types/supertest": "^6.0.3",
     "audit-ci": "^7.1.0",
     "aws-sdk-client-mock": "^4.1.0",
-    "esbuild": "^0.25.12",
+    "esbuild": "^0.27.0",
     "esbuild-plugin-clean": "^1.0.1",
     "esbuild-plugin-copy": "^2.1.1",
     "esbuild-plugin-manifest": "^1.0.5",

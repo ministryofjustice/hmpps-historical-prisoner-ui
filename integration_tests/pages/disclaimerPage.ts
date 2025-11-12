@@ -8,11 +8,14 @@ export default class DisclaimerPage extends AbstractPage {
 
   readonly confirmButton: Locator
 
+  readonly errorMessage: Locator
+
   private constructor(page: Page) {
     super(page)
     this.header = page.locator('h1', { hasText: 'Usage' })
     this.disclaimerCheckbox = page.getByRole('checkbox', { name: 'I confirm that I understand' })
     this.confirmButton = page.getByTestId('continue-button')
+    this.errorMessage = page.getByRole('link', { name: 'You must confirm that you' })
   }
 
   static async verifyOnPage(page: Page): Promise<DisclaimerPage> {
