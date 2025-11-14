@@ -35,13 +35,13 @@ test.describe('Disclaimer', () => {
     const disclaimerPageUpdate = await DisclaimerPage.verifyOnPage(page)
     await expect(disclaimerPageUpdate.disclaimerCheckbox).not.toBeChecked()
     await expect(disclaimerPageUpdate.errorMessage).toHaveText('You must confirm that you understand the disclaimer')
+    await expect(disclaimerPageUpdate.errorSummary).toHaveText('You must confirm that you understand the disclaimer')
   })
 
   test('Will successfully move to the search screen if disclaimer checkbox selected', async ({ page }) => {
     await login(page)
     const disclaimerPage = await DisclaimerPage.verifyOnPage(page)
     await disclaimerPage.confirmDisclaimer()
-    await SearchPage.verifyOnPage(page)
   })
 
   test('Will bypass the disclaimer page if the user has already accepted the disclaimer', async ({ page }) => {
@@ -50,7 +50,6 @@ test.describe('Disclaimer', () => {
     const disclaimerPage = await DisclaimerPage.verifyOnPage(page)
     await disclaimerPage.confirmDisclaimer()
 
-    await SearchPage.verifyOnPage(page)
     await page.goto('/disclaimer')
     await SearchPage.verifyOnPage(page)
   })

@@ -15,12 +15,15 @@ export default class AbstractPage {
   /** link to manage user details */
   readonly manageUserDetails: Locator
 
+  readonly errorSummary: Locator
+
   protected constructor(page: Page) {
     this.page = page
     this.phaseBanner = page.getByText('DEV')
     this.usersName = page.getByTestId('header-user-name')
     this.signoutLink = page.getByText('Sign out')
     this.manageUserDetails = page.getByTestId('manageDetails')
+    this.errorSummary = page.locator('[data-module="govuk-error-summary"]').getByRole('listitem')
   }
 
   async signOut() {

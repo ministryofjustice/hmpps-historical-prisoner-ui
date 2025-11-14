@@ -63,7 +63,7 @@ describe('Search controller', () => {
     } as unknown as Response
   })
 
-  describe('new search', () => {
+  describe('new Search', () => {
     it('should render the search page', async () => {
       await controller.clearSearch(req, res)
 

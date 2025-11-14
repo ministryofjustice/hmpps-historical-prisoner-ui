@@ -1,5 +1,6 @@
 import { expect, type Locator, type Page } from '@playwright/test'
 import AbstractPage from './abstractPage'
+import SearchPage from './searchPage'
 
 export default class DisclaimerPage extends AbstractPage {
   readonly header: Locator
@@ -24,8 +25,9 @@ export default class DisclaimerPage extends AbstractPage {
     return disclaimerPage
   }
 
-  async confirmDisclaimer() {
+  async confirmDisclaimer(): Promise<SearchPage> {
     await this.disclaimerCheckbox.click()
     await this.confirmButton.click()
+    return SearchPage.verifyOnPage(this.page)
   }
 }
