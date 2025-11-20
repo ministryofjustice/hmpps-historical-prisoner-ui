@@ -2,7 +2,7 @@ import { SuperAgentRequest } from 'superagent'
 import { stubFor } from './wiremock'
 
 export default {
-  stubGotenbergPing: (httpStatus = 200): SuperAgentRequest =>
+  stubPing: (httpStatus = 200): SuperAgentRequest =>
     stubFor({
       request: {
         method: 'GET',
