@@ -6,15 +6,18 @@ import {
   setup,
   type TelemetryClient,
 } from 'applicationinsights'
+import { Request, RequestHandler } from 'express'
+import { CorrelationContext } from 'applicationinsights/out/AutoCollection/CorrelationContextManager'
 import { EnvelopeTelemetry } from 'applicationinsights/out/Declarations/Contracts'
-import { RequestHandler } from 'express'
 import type { ApplicationInfo } from '../applicationInfo'
+import { HmppsUser } from '../interfaces/hmppsUser'
 
 const requestPrefixesToIgnore = ['GET /assets/', 'GET /health', 'GET /ping', 'GET /info']
+const dependencyPrefixesToIgnore = ['sqs']
 
 export type ContextObject = {
-  /* eslint-disable  @typescript-eslint/no-explicit-any */
-  [name: string]: any
+  ['http.ServerRequest']?: Request
+  correlationContext?: CorrelationContext
 }
 
 export function initialiseAppInsights(): void {
@@ -26,28 +29,34 @@ export function initialiseAppInsights(): void {
   }
 }
 
-export function buildAppInsightsClient({ applicationName, buildNumber }: ApplicationInfo): TelemetryClient {
+export function buildAppInsightsClient(
+  { applicationName, buildNumber }: ApplicationInfo,
+  overrideName?: string,
+): TelemetryClient {
   if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING) {
-    defaultClient.context.tags['ai.cloud.role'] = applicationName
+    defaultClient.context.tags['ai.cloud.role'] = overrideName || applicationName
     defaultClient.context.tags['ai.application.ver'] = buildNumber
     defaultClient.addTelemetryProcessor(addUserDataToRequests)
     defaultClient.addTelemetryProcessor(parameterisePaths)
     defaultClient.addTelemetryProcessor(ignoredRequestsProcessor)
+    defaultClient.addTelemetryProcessor(ignoredDependenciesProcessor)
     return defaultClient
   }
   return null
 }
 
-function addUserDataToRequests(envelope: EnvelopeTelemetry, contextObjects: ContextObject) {
+export function addUserDataToRequests(envelope: EnvelopeTelemetry, contextObjects: ContextObject) {
   const isRequest = envelope.data.baseType === Contracts.TelemetryTypeString.Request
   if (isRequest) {
-    const { username, authSource } = contextObjects?.['http.ServerRequest']?.res?.locals?.user || {}
+    const user = contextObjects?.['http.ServerRequest']?.res?.locals?.user || ({} as HmppsUser)
+    const { username, authSource } = user
     if (username) {
       const { properties } = envelope.data.baseData
       // eslint-disable-next-line no-param-reassign
       envelope.data.baseData.properties = {
         username,
         authSource,
+        ...(user.authSource === 'nomis' && user.activeCaseLoadId ? { activeCaseLoadId: user.activeCaseLoadId } : {}),
         ...properties,
       }
     }
@@ -66,12 +75,23 @@ function parameterisePaths(envelope: EnvelopeTelemetry, contextObjects: ContextO
   return true
 }
 
-function ignoredRequestsProcessor(envelope: EnvelopeTelemetry) {
+export function ignoredRequestsProcessor(envelope: EnvelopeTelemetry) {
   if (envelope.data.baseType === Contracts.TelemetryTypeString.Request) {
     const requestData = envelope.data.baseData
-    if (requestData instanceof Contracts.RequestData) {
+    if (requestData instanceof Contracts.RequestData && requestData.success) {
       const { name } = requestData
       return requestPrefixesToIgnore.every(prefix => !name.startsWith(prefix))
+    }
+  }
+  return true
+}
+
+export function ignoredDependenciesProcessor(envelope: EnvelopeTelemetry) {
+  if (envelope.data.baseType === Contracts.TelemetryTypeString.Dependency) {
+    const dependencyData = envelope.data.baseData
+    if (dependencyData instanceof Contracts.RemoteDependencyData && dependencyData.success) {
+      const { target } = dependencyData
+      return dependencyPrefixesToIgnore.every(prefix => !target.startsWith(prefix))
     }
   }
   return true
