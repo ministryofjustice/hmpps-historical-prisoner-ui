@@ -2,10 +2,10 @@ import { expect, test } from '@playwright/test'
 import frontendComponents from '../mockApis/frontendComponents'
 import { resetStubs } from '../mockApis/wiremock'
 import { login } from '../testUtils'
-import SearchPage from '../pages/searchPage'
+import SearchPage from '../pages/search'
 import historicalPrisonerApi from '../mockApis/historicalPrisoner'
-import ComparisonPage from '../pages/comparisonPage'
-import DetailPage from '../pages/detailPage'
+import ComparisonPage from '../pages/comparison'
+import DetailPage from '../pages/detail'
 
 test.describe('Comparison', () => {
   test.beforeEach('login', async ({ page }) => {

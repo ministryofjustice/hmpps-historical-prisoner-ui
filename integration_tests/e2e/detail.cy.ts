@@ -2,12 +2,12 @@ import { expect, test } from '@playwright/test'
 import frontendComponents from '../mockApis/frontendComponents'
 import { resetStubs } from '../mockApis/wiremock'
 import { login } from '../testUtils'
-import SearchPage from '../pages/searchPage'
-import DisclaimerPage from '../pages/disclaimerPage'
+import SearchPage from '../pages/search'
+import DisclaimerPage from '../pages/disclaimer'
 import historicalPrisonerApi from '../mockApis/historicalPrisoner'
-import DetailPage from '../pages/detailPage'
-import ComparisonPage from '../pages/comparisonPage'
-import PrintPage from '../pages/printPage'
+import DetailPage from '../pages/detail'
+import ComparisonPage from '../pages/comparison'
+import PrintPage from '../pages/print'
 
 test.describe('Detail', () => {
   test.beforeEach('Navigate to search page', async ({ page }) => {

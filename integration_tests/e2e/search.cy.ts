@@ -3,8 +3,8 @@ import { expect, test } from '@playwright/test'
 import frontendComponents from '../mockApis/frontendComponents'
 import { resetStubs } from '../mockApis/wiremock'
 import { login } from '../testUtils'
-import DisclaimerPage from '../pages/disclaimerPage'
-import SearchPage from '../pages/searchPage'
+import DisclaimerPage from '../pages/disclaimer'
+import SearchPage from '../pages/search'
 import historicalPrisonerApi from '../mockApis/historicalPrisoner'
 
 test.describe('Search', () => {

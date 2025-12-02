@@ -1,10 +1,10 @@
 import { expect, test } from '@playwright/test'
 
-import DisclaimerPage from '../pages/disclaimerPage'
+import DisclaimerPage from '../pages/disclaimer'
 import frontendComponents from '../mockApis/frontendComponents'
 import { resetStubs } from '../mockApis/wiremock'
 import { login } from '../testUtils'
-import SearchPage from '../pages/searchPage'
+import SearchPage from '../pages/search'
 
 test.describe('Disclaimer', () => {
   test.beforeEach('Will sign in', async ({ page }) => {

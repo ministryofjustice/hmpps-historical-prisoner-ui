@@ -5,10 +5,10 @@ import historicalPrisonerApi from '../mockApis/historicalPrisoner'
 import gotenberg from '../mockApis/gotenberg'
 import { resetStubs } from '../mockApis/wiremock'
 import { login } from '../testUtils'
-import DisclaimerPage from '../pages/disclaimerPage'
+import DisclaimerPage from '../pages/disclaimer'
 import prisonerDetail from '../mockApis/prisonerDetail.json'
-import PrintPage from '../pages/printPage'
-import DetailPage from '../pages/detailPage'
+import PrintPage from '../pages/print'
+import DetailPage from '../pages/detail'
 
 test.describe('Print', () => {
   test.beforeEach('Navigate to search page', async ({ page }) => {

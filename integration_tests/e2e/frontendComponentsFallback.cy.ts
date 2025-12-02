@@ -1,9 +1,9 @@
 import { expect, test } from '@playwright/test'
 
-import DisclaimerPage from '../pages/disclaimerPage'
+import DisclaimerPage from '../pages/disclaimer'
 import frontendComponents from '../mockApis/frontendComponents'
 import { login } from '../testUtils'
-import AuthSignInPage from '../pages/authSignInPage'
+import AuthSignInPage from '../pages/authSignIn'
 
 test.describe('Frontend Components Fallback', () => {
   test.beforeEach('Will stub components mapping error', async () => {

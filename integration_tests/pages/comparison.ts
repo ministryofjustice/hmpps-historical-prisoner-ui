@@ -1,8 +1,8 @@
 import { expect, type Locator, type Page } from '@playwright/test'
-import AbstractPage from './abstractPage'
+import AbstractPage from './abstract'
 import historicalPrisonerApi from '../mockApis/historicalPrisoner'
-import SearchPage from './searchPage'
-import DisclaimerPage from './disclaimerPage'
+import SearchPage from './search'
+import DisclaimerPage from './disclaimer'
 
 export default class ComparisonPage extends AbstractPage {
   readonly header: Locator

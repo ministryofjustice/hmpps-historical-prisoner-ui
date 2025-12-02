@@ -4,8 +4,8 @@ import hmppsAuth from '../mockApis/hmppsAuth'
 import frontendComponents from '../mockApis/frontendComponents'
 
 import { login, resetStubs } from '../testUtils'
-import DisclaimerPage from '../pages/disclaimerPage'
-import AuthErrorPage from '../pages/authErrorPage'
+import DisclaimerPage from '../pages/disclaimer'
+import AuthErrorPage from '../pages/authError'
 
 test.describe('SignIn', () => {
   test.beforeEach(async () => {

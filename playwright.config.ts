@@ -12,7 +12,8 @@ import { defineConfig, devices } from '@playwright/test'
  */
 export default defineConfig({
   outputDir: './test_results/playwright/test-output',
-  testDir: './integration_tests/specs',
+  testDir: './integration_tests/e2e',
+  testMatch: '**/e2e/**/*.cy.ts',
   /* Maximum time one test can run for. (millis) */
   timeout: 3 * 60 * 1000,
   /* Maximum time test suite can run for. (millis) */
