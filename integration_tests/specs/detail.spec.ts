@@ -10,8 +10,10 @@ import ComparisonPage from '../pages/comparisonPage'
 import PrintPage from '../pages/printPage'
 
 test.describe('Detail', () => {
-  test.beforeEach(async () => {
+  test.beforeEach('Navigate to search page', async ({ page }) => {
     await frontendComponents.stubFrontendComponents()
+    await login(page)
+    await DisclaimerPage.confirmDisclaimer(page)
   })
 
   test.afterEach(async () => {
@@ -19,9 +21,7 @@ test.describe('Detail', () => {
   })
 
   test('Will include back link to search results page', async ({ page }) => {
-    await login(page)
-    const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
-
+    const searchPage = await SearchPage.verifyOnPage(page)
     // need to carry out a search to get the results into the session
     await searchPage.firstName.fill('John')
     await historicalPrisonerApi.stubPrisonerSearchByName()
@@ -40,8 +40,7 @@ test.describe('Detail', () => {
   })
 
   test('Will include back link to the comparison page', async ({ page }) => {
-    await login(page)
-    const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+    const searchPage = await SearchPage.verifyOnPage(page)
 
     // need to carry out a search to get the results into the session
     await searchPage.firstName.fill('John')
@@ -66,8 +65,6 @@ test.describe('Detail', () => {
 
   test.describe('Will show all sections with data', () => {
     test.beforeEach('Will navigate to detail page', async ({ page }) => {
-      await login(page)
-      await DisclaimerPage.confirmDisclaimer(page)
       await historicalPrisonerApi.stubPrisonerDetail()
       await page.goto('/detail/A1234BC')
     })
@@ -212,8 +209,6 @@ test.describe('Detail', () => {
 
   test.describe('Will show all sections with no data', () => {
     test.beforeEach('Will navigate to detail page with no data', async ({ page }) => {
-      await login(page)
-      await DisclaimerPage.confirmDisclaimer(page)
       // @ts-expect-error - stubbing a partial object
       await historicalPrisonerApi.stubPrisonerDetail({ summary: { prisonNumber: 'AB111111', lastName: 'SURNAMEA' } })
       await page.goto('/detail/A1234BC')
@@ -276,8 +271,6 @@ test.describe('Detail', () => {
 
   test.describe('Back to top', () => {
     test.beforeEach('Will navigate to detail page', async ({ page }) => {
-      await login(page)
-      await DisclaimerPage.confirmDisclaimer(page)
       await historicalPrisonerApi.stubPrisonerDetail()
       await page.goto('/detail/A1234BC')
     })

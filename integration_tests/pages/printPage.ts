@@ -4,9 +4,15 @@ import AbstractPage from './abstractPage'
 export default class PrintPage extends AbstractPage {
   readonly header: Locator
 
+  readonly saveButton: Locator
+
+  readonly backLink: Locator
+
   private constructor(name: string, page: Page) {
     super(page)
     this.header = page.locator('h1', { hasText: `Which details would you like to save for ${name}?` })
+    this.saveButton = page.getByTestId('save-button')
+    this.backLink = page.getByRole('link', { name: 'Go back to prisoner details' })
   }
 
   static async verifyOnPage(name: string, page: Page): Promise<PrintPage> {
@@ -14,10 +20,8 @@ export default class PrintPage extends AbstractPage {
     await expect(printPage.header).toBeVisible()
     return printPage
   }
-  //
-  // optionCheckbox = text => cy.contains('label', text).prev()
-  //
-  // saveButton = (): PageElement => cy.get('button[type="submit"]')
-  //
-  // backLink = (): PageElement => cy.get('.govuk-back-link')
+
+  optionCheckbox(text: string) {
+    return this.page.getByText(text)
+  }
 }

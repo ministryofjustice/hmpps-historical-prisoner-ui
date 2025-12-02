@@ -40,6 +40,8 @@ export default class SearchPage extends AbstractPage {
 
   readonly searchResults: Locator
 
+  readonly paginationResults: Locator
+
   private constructor(page: Page) {
     super(page)
     this.header = page.locator('h1', { hasText: 'Prisoner search' })
@@ -61,6 +63,7 @@ export default class SearchPage extends AbstractPage {
     this.suggestions = page.getByTestId('suggestions')
     this.viewShortlistLink = page.getByTestId('view-shortlist')
     this.searchResults = page.getByTestId('search-results').locator('tbody tr')
+    this.paginationResults = page.getByRole('navigation', { name: 'Pagination navigation' })
   }
 
   static async verifyOnPage(page: Page): Promise<SearchPage> {
@@ -74,32 +77,22 @@ export default class SearchPage extends AbstractPage {
   }
 
   async shortlistFormSubmit(prisonNumber: string) {
-    return this.page.getByTestId(`shortlist-${prisonNumber}`).getByRole('button', { name: 'Add to shortlist' }).click()
+    return this.addToShortlist(prisonNumber).click()
+  }
+
+  addToShortlist(prisonNumber: string) {
+    return this.page.getByTestId(`shortlist-${prisonNumber}`).getByRole('button', { name: 'Add to shortlist' })
+  }
+
+  removeFromShortlist(prisonNumber: string) {
+    return this.page.getByTestId(`shortlist-${prisonNumber}`).getByRole('button', { name: 'Remove from shortlist' })
   }
 
   async detail(name: string) {
     return this.page.getByRole('link', { name }).click()
   }
 
-  //
-  // filter = (filterText: string): PageElement => cy.contains('.moj-filter__tag', filterText)
-  //
-  // filterButton = (text: string) => cy.contains('label', text).prev()
-  //
-  // suggestions = (): PageElement => cy.get('[data-qa="suggestions"]')
-  //
-  // searchResults = (): PageElement => cy.get('[data-qa="search-results"] tbody tr ')
-  //
-  // searchResultsCount = (): PageElement => cy.get('[data-qa="search-results-count"] ')
-  //
-  // getPaginationResults = (): PageElement => cy.get('.moj-pagination__results')
-  //
-  // nextPage = (): PageElement => cy.get('.moj-pagination__item--next').first().click()
-  //
-  // detailLink = (prisonNumber: string): PageElement => cy.get(`a[href="/detail/${prisonNumber}"]`)
-  //
-  // shortlistFormSubmit = (prisonNumber: string): PageElement =>
-  //   cy.get(`form[data-qa="shortlist-${prisonNumber}"] input[type="submit"]`)
-  //
-  // viewShortlistLink = (): PageElement => cy.get('[data-qa="view-shortlist"]')
+  filter(filter: string) {
+    return this.page.getByRole('link', { name: filter, exact: true })
+  }
 }

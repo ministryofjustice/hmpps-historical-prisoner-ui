@@ -8,8 +8,10 @@ import SuggestionsPage from '../pages/suggestionsPage'
 import historicalPrisonerApi from '../mockApis/historicalPrisoner'
 
 test.describe('Suggestions', () => {
-  test.beforeEach(async () => {
+  test.beforeEach('Navigate to search page', async ({ page }) => {
     await frontendComponents.stubFrontendComponents()
+    await login(page)
+    await DisclaimerPage.confirmDisclaimer(page)
   })
 
   test.afterEach(async () => {
@@ -17,8 +19,7 @@ test.describe('Suggestions', () => {
   })
 
   test('Back link will take user back to search results page with search pre-populated', async ({ page }) => {
-    await login(page)
-    const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+    const searchPage = await SearchPage.verifyOnPage(page)
 
     await searchPage.firstName.fill('John')
     await historicalPrisonerApi.stubPrisonerSearchByName()
@@ -32,8 +33,7 @@ test.describe('Suggestions', () => {
   })
 
   test('New search link will take user back to search page with search cleared', async ({ page }) => {
-    await login(page)
-    const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+    const searchPage = await SearchPage.verifyOnPage(page)
 
     await searchPage.firstName.fill('John')
     await historicalPrisonerApi.stubPrisonerSearchByName()
@@ -47,8 +47,7 @@ test.describe('Suggestions', () => {
   })
 
   test('Will suggest using initial for forename', async ({ page }) => {
-    await login(page)
-    const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+    const searchPage = await SearchPage.verifyOnPage(page)
 
     await searchPage.firstName.fill('John')
     await historicalPrisonerApi.stubPrisonerSearchByName()
@@ -63,8 +62,7 @@ test.describe('Suggestions', () => {
   })
 
   test('Will suggest adding wildcard to forename', async ({ page }) => {
-    await login(page)
-    const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+    const searchPage = await SearchPage.verifyOnPage(page)
 
     await searchPage.firstName.fill('Alex')
     await historicalPrisonerApi.stubPrisonerSearchByName()
@@ -80,8 +78,7 @@ test.describe('Suggestions', () => {
   })
 
   test('Will suggest adding wildcard to surname', async ({ page }) => {
-    await login(page)
-    const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+    const searchPage = await SearchPage.verifyOnPage(page)
 
     await searchPage.lastName.fill('Smith')
     await historicalPrisonerApi.stubPrisonerSearchByName()
@@ -96,8 +93,7 @@ test.describe('Suggestions', () => {
   })
 
   test('Will suggest adding shorter wildcard to surname', async ({ page }) => {
-    await login(page)
-    const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+    const searchPage = await SearchPage.verifyOnPage(page)
 
     await searchPage.lastName.fill('Smith')
     await historicalPrisonerApi.stubPrisonerSearchByName()
@@ -112,8 +108,7 @@ test.describe('Suggestions', () => {
   })
 
   test('Will suggest adding swapping forename and surname', async ({ page }) => {
-    await login(page)
-    const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+    const searchPage = await SearchPage.verifyOnPage(page)
 
     await searchPage.firstName.fill('John')
     await searchPage.lastName.fill('Smith')
@@ -130,8 +125,7 @@ test.describe('Suggestions', () => {
   })
 
   test('Will suggest adding swapping forename and surname when one is empty', async ({ page }) => {
-    await login(page)
-    const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+    const searchPage = await SearchPage.verifyOnPage(page)
 
     await searchPage.lastName.fill('Smith')
     await historicalPrisonerApi.stubPrisonerSearchByName()
@@ -147,8 +141,7 @@ test.describe('Suggestions', () => {
   })
 
   test('Will suggest adding changing dob to age range', async ({ page }) => {
-    await login(page)
-    const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+    const searchPage = await SearchPage.verifyOnPage(page)
 
     await searchPage.dobYear.fill(`${new Date().getFullYear() - 15}`)
     await searchPage.dobMonth.fill('10')
@@ -168,8 +161,7 @@ test.describe('Suggestions', () => {
   })
 
   test('Will suggest adding changing age to age range', async ({ page }) => {
-    await login(page)
-    const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+    const searchPage = await SearchPage.verifyOnPage(page)
 
     await searchPage.age.fill('15')
     await historicalPrisonerApi.stubPrisonerSearchByName()

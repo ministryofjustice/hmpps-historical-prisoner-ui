@@ -17,12 +17,15 @@ export default class AbstractPage {
 
   readonly errorSummary: Locator
 
+  readonly changeLocationLink: Locator
+
   protected constructor(page: Page) {
     this.page = page
-    this.phaseBanner = page.getByText('DEV')
-    this.usersName = page.getByTestId('header-user-name')
-    this.signoutLink = page.getByText('Sign out')
-    this.manageUserDetails = page.getByTestId('manageDetails')
+    this.phaseBanner = page.getByRole('banner').getByText('DEV')
+    this.usersName = page.getByRole('banner').getByTestId('header-user-name')
+    this.signoutLink = page.getByRole('banner').getByText('Sign out')
+    this.manageUserDetails = page.getByRole('banner').getByTestId('manageDetails')
+    this.changeLocationLink = page.getByRole('banner').getByTestId('changeCaseLoad')
     this.errorSummary = page.locator('[data-module="govuk-error-summary"]').getByRole('listitem')
   }
 

@@ -8,8 +8,10 @@ import SearchPage from '../pages/searchPage'
 import historicalPrisonerApi from '../mockApis/historicalPrisoner'
 
 test.describe('Search', () => {
-  test.beforeEach(async () => {
+  test.beforeEach('Navigate to search page', async ({ page }) => {
     await frontendComponents.stubFrontendComponents()
+    await login(page)
+    await DisclaimerPage.confirmDisclaimer(page)
   })
 
   test.afterEach(async () => {
@@ -17,15 +19,12 @@ test.describe('Search', () => {
   })
 
   test('Will show the search form with name/age selected', async ({ page }) => {
-    await login(page)
-    const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+    const searchPage = await SearchPage.verifyOnPage(page)
     await expect(searchPage.nameAgeRadioButton).toBeChecked()
   })
 
   test('Will display name search data entered when the search is performed', async ({ page }) => {
-    await login(page)
-    const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
-
+    const searchPage = await SearchPage.verifyOnPage(page)
     await searchPage.firstName.fill('John')
     await searchPage.lastName.fill('Smith')
     await searchPage.dobDay.fill('25')
@@ -43,8 +42,7 @@ test.describe('Search', () => {
   })
 
   test('Will allow certain non-alphabetic characters in first and last name', async ({ page }) => {
-    await login(page)
-    const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+    const searchPage = await SearchPage.verifyOnPage(page)
 
     await searchPage.firstName.fill("John-James's%*")
     await searchPage.lastName.fill("Smith-JonesO'Malley%*")
@@ -59,8 +57,7 @@ test.describe('Search', () => {
   })
 
   test('Will display identifier search data entered when the search is performed', async ({ page }) => {
-    await login(page)
-    const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+    const searchPage = await SearchPage.verifyOnPage(page)
 
     await searchPage.identifierRadioButton.click()
     await searchPage.prisonNumber.fill('A1234BC')
@@ -77,8 +74,7 @@ test.describe('Search', () => {
   })
 
   test('Will display address search data entered when the search is performed', async ({ page }) => {
-    await login(page)
-    const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+    const searchPage = await SearchPage.verifyOnPage(page)
 
     await searchPage.otherRadioButton.click()
     await searchPage.address.fill('Hill Valley')
@@ -91,8 +87,7 @@ test.describe('Search', () => {
   })
 
   test('Will clear the search form when New Search is selected', async ({ page }) => {
-    await login(page)
-    const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+    const searchPage = await SearchPage.verifyOnPage(page)
 
     await searchPage.firstName.fill('John')
     await searchPage.lastName.fill('Smith')
@@ -111,8 +106,7 @@ test.describe('Search', () => {
 
   test.describe('Will show/hide the suggestion link', () => {
     test('Will show the suggestion link if searching by first name', async ({ page }) => {
-      await login(page)
-      const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+      const searchPage = await SearchPage.verifyOnPage(page)
 
       await searchPage.firstName.fill('John')
       await historicalPrisonerApi.stubPrisonerSearchByName()
@@ -121,8 +115,7 @@ test.describe('Search', () => {
       await expect(searchPage.suggestions).toBeVisible()
     })
     test('Will show the suggestion link if searching by last name', async ({ page }) => {
-      await login(page)
-      const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+      const searchPage = await SearchPage.verifyOnPage(page)
 
       await searchPage.lastName.fill('Smith')
       await historicalPrisonerApi.stubPrisonerSearchByName()
@@ -131,8 +124,7 @@ test.describe('Search', () => {
       await expect(searchPage.suggestions).toBeVisible()
     })
     test('Will show the suggestion link if searching by date of birth', async ({ page }) => {
-      await login(page)
-      const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+      const searchPage = await SearchPage.verifyOnPage(page)
 
       await searchPage.dobDay.fill('25')
       await searchPage.dobMonth.fill('12')
@@ -143,8 +135,7 @@ test.describe('Search', () => {
       await expect(searchPage.suggestions).toBeVisible()
     })
     test('Will not show the suggestion link if searching by name with age range', async ({ page }) => {
-      await login(page)
-      const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+      const searchPage = await SearchPage.verifyOnPage(page)
 
       await searchPage.age.fill('19-25')
 
@@ -153,8 +144,7 @@ test.describe('Search', () => {
       await expect(searchPage.suggestions).not.toBeVisible()
     })
     test('Will not show the suggestion link if searching by id', async ({ page }) => {
-      await login(page)
-      const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+      const searchPage = await SearchPage.verifyOnPage(page)
 
       await searchPage.identifierRadioButton.click()
       await searchPage.prisonNumber.fill('A1234BC')
@@ -164,8 +154,7 @@ test.describe('Search', () => {
       await expect(searchPage.suggestions).not.toBeVisible()
     })
     test('Will not show the suggestion link if searching by address', async ({ page }) => {
-      await login(page)
-      const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+      const searchPage = await SearchPage.verifyOnPage(page)
 
       await searchPage.otherRadioButton.click()
       await searchPage.address.fill('Hill')
@@ -178,8 +167,7 @@ test.describe('Search', () => {
 
   test.describe('FormValidation', () => {
     test('Will show an error if attempt to submit the name/age form without any data', async ({ page }) => {
-      await login(page)
-      const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+      const searchPage = await SearchPage.verifyOnPage(page)
 
       await searchPage.doSearch()
       await expect(searchPage.errorSummary).toBeVisible()
@@ -187,8 +175,7 @@ test.describe('Search', () => {
     })
 
     test('Will show an error if attempt to submit the identifier form without any data', async ({ page }) => {
-      await login(page)
-      const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+      const searchPage = await SearchPage.verifyOnPage(page)
 
       await searchPage.identifierRadioButton.click()
       await searchPage.doSearch()
@@ -197,8 +184,7 @@ test.describe('Search', () => {
     })
 
     test('Will show an error if attempt to submit the address form without any data', async ({ page }) => {
-      await login(page)
-      const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+      const searchPage = await SearchPage.verifyOnPage(page)
 
       await searchPage.otherRadioButton.click()
       await searchPage.doSearch()
@@ -207,8 +193,7 @@ test.describe('Search', () => {
     })
 
     test('Will show an error if attempt to submit the first name form with invalid characters', async ({ page }) => {
-      await login(page)
-      const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+      const searchPage = await SearchPage.verifyOnPage(page)
 
       await searchPage.firstName.fill('dfg4')
       await searchPage.doSearch()
@@ -219,8 +204,7 @@ test.describe('Search', () => {
     })
 
     test('Will show an error if attempt to submit the last name form with invalid characters', async ({ page }) => {
-      await login(page)
-      const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+      const searchPage = await SearchPage.verifyOnPage(page)
 
       await searchPage.lastName.fill('dfg4')
       await searchPage.doSearch()
@@ -231,8 +215,7 @@ test.describe('Search', () => {
     })
 
     test('Will show an error if attempt to submit the dob with missing day', async ({ page }) => {
-      await login(page)
-      const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+      const searchPage = await SearchPage.verifyOnPage(page)
 
       await searchPage.dobMonth.fill('12')
       await searchPage.dobYear.fill('1984')
@@ -242,8 +225,7 @@ test.describe('Search', () => {
     })
 
     test('Will show an error if attempt to submit the dob with missing month', async ({ page }) => {
-      await login(page)
-      const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+      const searchPage = await SearchPage.verifyOnPage(page)
 
       await searchPage.dobDay.fill('25')
       await searchPage.dobYear.fill('1984')
@@ -253,8 +235,7 @@ test.describe('Search', () => {
     })
 
     test('Will show an error if attempt to submit the dob with missing year', async ({ page }) => {
-      await login(page)
-      const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+      const searchPage = await SearchPage.verifyOnPage(page)
 
       await searchPage.dobDay.fill('25')
       await searchPage.dobDay.fill('12')
@@ -263,8 +244,7 @@ test.describe('Search', () => {
       await expect(searchPage.errorSummary).toHaveText('Enter a valid date of birth in the format DD/MM/YYYY')
     })
     test('Will show an error if attempt to submit the dob with invalid characters', async ({ page }) => {
-      await login(page)
-      const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+      const searchPage = await SearchPage.verifyOnPage(page)
 
       await searchPage.dobDay.fill('et')
       await searchPage.dobDay.fill('12')
@@ -275,8 +255,7 @@ test.describe('Search', () => {
     })
 
     test('Will show an error if attempt to submit the dob with an invalid date', async ({ page }) => {
-      await login(page)
-      const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+      const searchPage = await SearchPage.verifyOnPage(page)
 
       await searchPage.dobDay.fill('31')
       await searchPage.dobDay.fill('11')
@@ -287,8 +266,7 @@ test.describe('Search', () => {
     })
 
     test('Will show an error if attempt to submit the age/range with an age too small', async ({ page }) => {
-      await login(page)
-      const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+      const searchPage = await SearchPage.verifyOnPage(page)
 
       await searchPage.age.fill('9')
       await searchPage.doSearch()
@@ -296,8 +274,7 @@ test.describe('Search', () => {
       await expect(searchPage.errorSummary).toHaveText('Age must be a whole number')
     })
     test('Will show an error if attempt to submit the age/range with an age too big', async ({ page }) => {
-      await login(page)
-      const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+      const searchPage = await SearchPage.verifyOnPage(page)
 
       await searchPage.age.fill('200')
       await searchPage.doSearch()
@@ -305,8 +282,7 @@ test.describe('Search', () => {
       await expect(searchPage.errorSummary).toHaveText('Age must be a whole number')
     })
     test('Will show an error if attempt to submit the age/range with a non-numerical age', async ({ page }) => {
-      await login(page)
-      const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+      const searchPage = await SearchPage.verifyOnPage(page)
 
       await searchPage.age.fill('wr')
       await searchPage.doSearch()
@@ -314,8 +290,7 @@ test.describe('Search', () => {
       await expect(searchPage.errorSummary).toHaveText('Age must be a whole number')
     })
     test('Will show an error if attempt to submit the age/range with a negative age range', async ({ page }) => {
-      await login(page)
-      const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+      const searchPage = await SearchPage.verifyOnPage(page)
 
       await searchPage.age.fill('19-15')
       await searchPage.doSearch()
@@ -327,8 +302,7 @@ test.describe('Search', () => {
     test('Will show an error if attempt to submit the age/range with an age range more than 10 years', async ({
       page,
     }) => {
-      await login(page)
-      const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+      const searchPage = await SearchPage.verifyOnPage(page)
 
       await searchPage.age.fill('19-39')
       await searchPage.doSearch()
@@ -338,8 +312,7 @@ test.describe('Search', () => {
       )
     })
     test('Will show an error if attempt to submit the age/range with non-numerical age range', async ({ page }) => {
-      await login(page)
-      const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+      const searchPage = await SearchPage.verifyOnPage(page)
 
       await searchPage.age.fill('er-3245')
       await searchPage.doSearch()
@@ -350,8 +323,7 @@ test.describe('Search', () => {
     })
 
     test('Will show an error if attempt to submit an address with only one word', async ({ page }) => {
-      await login(page)
-      const searchPage: SearchPage = await DisclaimerPage.confirmDisclaimer(page)
+      const searchPage = await SearchPage.verifyOnPage(page)
 
       await searchPage.otherRadioButton.click()
       await searchPage.address.fill('Hill')
