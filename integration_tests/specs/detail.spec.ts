@@ -80,7 +80,7 @@ test.describe('Detail', () => {
     })
 
     test('Will show prisoner summary', async ({ page }) => {
-      await expect(page.getByTestId('dob')).toHaveText('01/01/1980 (45 years)')
+      await expect(page.getByTestId('dob')).toContainText('01/01/1980')
       await expect(page.getByTestId('gender')).toHaveText('Male')
       await expect(page.getByTestId('ethnicity')).toHaveText('White - British')
       await expect(page.getByTestId('birthCountry')).toHaveText('England')

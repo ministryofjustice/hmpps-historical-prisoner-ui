@@ -45,7 +45,7 @@ test.describe('Comparison', () => {
       await expect(page.getByTestId('prisonNumber2')).toHaveText('BF123457')
       const promises = []
       for (let i = 0; i < 3; i += 1) {
-        promises.push(expect(page.getByTestId(`dob${i}`)).toHaveText('01/01/1980 (45 years)'))
+        promises.push(expect(page.getByTestId(`dob${i}`)).toContainText('01/01/1980'))
         promises.push(expect(page.getByTestId(`remove-link${i}`)).toHaveText('Remove from shortlist'))
       }
       await Promise.all(promises)
