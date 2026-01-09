@@ -63,7 +63,7 @@ export default class SearchPage extends AbstractPage {
     this.suggestions = page.getByTestId('suggestions')
     this.viewShortlistLink = page.getByTestId('view-shortlist')
     this.searchResults = page.getByTestId('search-results').locator('tbody tr')
-    this.paginationResults = page.getByRole('navigation', { name: 'Pagination navigation' })
+    this.paginationResults = page.getByRole('navigation', { name: 'Pagination' })
   }
 
   static async verifyOnPage(page: Page): Promise<SearchPage> {

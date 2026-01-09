@@ -160,16 +160,12 @@ test.describe('Search Results', () => {
     test('Will show the total prisoners returned', async ({ page }) => {
       const searchWithResultsPage = await SearchPage.verifyOnPage(page)
       await expect(searchWithResultsPage.searchResults).toHaveCount(4)
-      await expect(
-        searchWithResultsPage.paginationResults.getByText('Showing 1 to 4 of 6 prisoners').first(),
-      ).toBeVisible()
+      await expect(page.getByText('Showing 1 to 4 of 6 total prisoners').first()).toBeVisible()
     })
 
     test('Will show paging information', async ({ page }) => {
       const searchWithResultsPage = await SearchPage.verifyOnPage(page)
-      await expect(
-        searchWithResultsPage.paginationResults.getByText('Showing 1 to 4 of 6 prisoners').first(),
-      ).toBeVisible()
+      await expect(page.getByText('Showing 1 to 4 of 6 total prisoners').first()).toBeVisible()
       await searchWithResultsPage.paginationResults.getByRole('link', { name: 'Next' }).first().click()
       await SearchPage.verifyOnPage(page)
     })
