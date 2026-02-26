@@ -6,7 +6,7 @@ export default abstract class AbstractDetailController {
   protected constructor(protected readonly historicalPrisonerService: HistoricalPrisonerService) {}
 
   protected async getPrisonerDetail(req: Request): Promise<PrisonerDetailDto> {
-    const { prisonNo } = req.params
+    const prisonNo = req.params.prisonNo.toString()
     if (prisonNo !== req.session.prisonerDetail?.prisonNumber) {
       // update session if we don't have the correct or any prison details
       req.session.prisonerDetail = await this.historicalPrisonerService.getPrisonerDetail(req.user.token, prisonNo)
