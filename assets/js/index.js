@@ -12,5 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
     case 'detail':
       setupBackToTop()
       break
+    default:
   }
 })
