@@ -15,7 +15,7 @@
 .section-divider {
   padding-top: 15px;
   padding-bottom: 15px;
-  border-bottom: 3px solid $govuk-border-colour;
+  border-bottom: 3px solid govuk-functional-colour(border);
 }
 
 .section-divider-bottom {
@@ -33,7 +33,7 @@
   text-decoration: underline;
   cursor: pointer;
   padding: 0;
-  color: $govuk-link-colour;
+  color: govuk-functional-colour(link);
   font-size: 16px;
   float: right;
 }
