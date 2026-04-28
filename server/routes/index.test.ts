@@ -3,12 +3,16 @@ import request from 'supertest'
 import { appWithAllRoutes, user } from './testutils/appSetup'
 import AuditService from '../services/auditService'
 import HistoricalPrisonerService from '../services/historicalPrisonerService'
+import HmppsAuditClient from '../data/hmppsAuditClient'
+import HistoricalPrisonerApiClient from '../data/historicalPrisonerApiClient'
 
 jest.mock('../services/auditService')
 jest.mock('../services/historicalPrisonerService')
 
-const auditService = new AuditService(null) as jest.Mocked<AuditService>
-const historicalPrisonerService = new HistoricalPrisonerService(null) as jest.Mocked<HistoricalPrisonerService>
+const auditService = new AuditService({} as HmppsAuditClient) as jest.Mocked<AuditService>
+const historicalPrisonerService = new HistoricalPrisonerService(
+  {} as HistoricalPrisonerApiClient,
+) as jest.Mocked<HistoricalPrisonerService>
 
 let app: Express
 
