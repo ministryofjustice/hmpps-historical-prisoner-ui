@@ -3,8 +3,8 @@ import HmppsError from '../../interfaces/HmppsError'
 import dateOfBirthValidator from '../../utils/dateOfBirthValidator'
 import ageValidator from '../../utils/ageValidator'
 
-export function isAlphabeticOrWildcard(field: string) {
-  return /^[A-Za-z-'%*]*$/.test(field)
+export function isAlphabeticOrWildcard(field: string | undefined): boolean {
+  return field === undefined || /^[A-Za-z-'%*]*$/.test(field)
 }
 
 function validateNameData(form: PrisonerSearchForm, errors: HmppsError[]) {

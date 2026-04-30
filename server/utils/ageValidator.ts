@@ -1,6 +1,6 @@
 const MAX_AGE_RANGE = 10
 
-export default function ageValidator(age: string): string {
+export default function ageValidator(age?: string): string | null {
   if (!age) {
     return null
   }

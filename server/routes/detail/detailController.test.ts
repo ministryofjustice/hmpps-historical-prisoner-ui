@@ -3,9 +3,12 @@ import { Request, Response } from 'express'
 import DetailController from './detailController'
 import HistoricalPrisonerService from '../../services/historicalPrisonerService'
 import auditServiceMock from '../../testutils/auditServiceMock'
+import HistoricalPrisonerApiClient from '../../data/historicalPrisonerApiClient'
 
 jest.mock('../../services/historicalPrisonerService')
-const historicalPrisonerService = new HistoricalPrisonerService(null) as jest.Mocked<HistoricalPrisonerService>
+const historicalPrisonerService = new HistoricalPrisonerService(
+  {} as HistoricalPrisonerApiClient,
+) as jest.Mocked<HistoricalPrisonerService>
 const auditService = auditServiceMock()
 const controller = new DetailController(historicalPrisonerService, auditService)
 

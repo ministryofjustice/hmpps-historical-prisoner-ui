@@ -19,7 +19,7 @@ export default class HistoricalPrisonerApiClient extends RestClient {
   async findPrisonersByName(
     token: string,
     prisonersByNameForm: FindPrisonersByName,
-    page: number = undefined,
+    page?: number,
   ): Promise<PagedModelPrisonerSearchDto> {
     return this.get<PagedModelPrisonerSearchDto>(
       {
@@ -33,7 +33,7 @@ export default class HistoricalPrisonerApiClient extends RestClient {
   async findPrisonersByIdentifiers(
     token: string,
     prisonersByIdentifiersForm: FindPrisonersByIdentifiers,
-    page: number = undefined,
+    page?: number,
   ): Promise<PagedModelPrisonerSearchDto> {
     return this.get<PagedModelPrisonerSearchDto>(
       {
@@ -47,7 +47,7 @@ export default class HistoricalPrisonerApiClient extends RestClient {
   async findPrisonersByAddressTerms(
     token: string,
     prisonersByAddress: FindPrisonersByAddress,
-    page: number = undefined,
+    page?: number,
   ): Promise<PagedModelPrisonerSearchDto> {
     return this.get<PagedModelPrisonerSearchDto>(
       {
