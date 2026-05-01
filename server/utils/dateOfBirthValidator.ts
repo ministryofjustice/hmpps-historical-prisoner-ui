@@ -1,6 +1,6 @@
 import { isAfter, isValid, parse, startOfToday } from 'date-fns'
 
-export default function dateOfBirthValidator(day?: string, month?: string, year?: string): string {
+export default function dateOfBirthValidator(day?: string, month?: string, year?: string): string | null {
   if (!day && !month && !year) {
     return null
   }
@@ -23,10 +23,10 @@ export default function dateOfBirthValidator(day?: string, month?: string, year?
   return null
 }
 
-const isOneOrTwoDigits = (value: string): boolean => {
+const isOneOrTwoDigits = (value?: string): boolean => {
   return !Number.isNaN(Number(value)) && (value?.length === 1 || value?.length === 2)
 }
 
-const isFourDigits = (value: string): boolean => {
+const isFourDigits = (value?: string): boolean => {
   return !Number.isNaN(Number(value)) && value?.length === 4
 }

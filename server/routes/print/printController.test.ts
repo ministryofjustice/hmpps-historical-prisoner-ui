@@ -4,9 +4,12 @@ import PrintController from './printController'
 import HistoricalPrisonerService from '../../services/historicalPrisonerService'
 import auditServiceMock from '../../testutils/auditServiceMock'
 import { PrisonerDetailDto } from '../../@types/historical-prisoner/historicalPrisonerApiTypes'
+import HistoricalPrisonerApiClient from '../../data/historicalPrisonerApiClient'
 
 jest.mock('../../services/historicalPrisonerService')
-const historicalPrisonerService = new HistoricalPrisonerService(null) as jest.Mocked<HistoricalPrisonerService>
+const historicalPrisonerService = new HistoricalPrisonerService(
+  {} as HistoricalPrisonerApiClient,
+) as jest.Mocked<HistoricalPrisonerService>
 const auditService = auditServiceMock()
 const controller = new PrintController(historicalPrisonerService, auditService)
 

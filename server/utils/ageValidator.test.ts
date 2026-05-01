@@ -1,6 +1,10 @@
 import ageValidator from './ageValidator'
 
 describe('ageValidator', () => {
+  it('should return null for undefined', () => {
+    expect(ageValidator(undefined)).toBeNull()
+  })
+
   it('should return null for an empty string', () => {
     expect(ageValidator('')).toBeNull()
   })
