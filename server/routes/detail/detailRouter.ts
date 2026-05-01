@@ -11,7 +11,7 @@ export default function routes(
 ): Router {
   const detailController = new DetailController(historicalPrisonerService, auditService)
 
-  router.get('/detail/:prisonNo', async (req, res, next) => detailController.getDetail(req, res))
+  router.get('/detail/:prisonNo', async (req, res) => detailController.getDetail(req, res))
 
   return router
 }

@@ -11,9 +11,9 @@ export default function routes(
 ): Router {
   const printController = new PrintController(historicalPrisonerService, auditService)
 
-  router.get('/print/:prisonNo', async (req, res, next) => printController.getPrintForm(req, res))
-  router.post('/print/:prisonNo', async (req, res, next) => printController.postPrintForm(req, res))
-  router.get('/print/:prisonNo/pdf', async (req, res, next) => printController.renderPdf(req, res))
+  router.get('/print/:prisonNo', async (req, res) => printController.getPrintForm(req, res))
+  router.post('/print/:prisonNo', async (req, res) => printController.postPrintForm(req, res))
+  router.get('/print/:prisonNo/pdf', async (req, res) => printController.renderPdf(req, res))
 
   return router
 }

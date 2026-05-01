@@ -128,17 +128,18 @@ export default class SearchController {
     return []
   }
 
-  getPaginationParams(req: Request, page: PageMetaData, filters: string): LegacyPagination {
+  getPaginationParams(_req: Request, page: PageMetaData, filters: string): LegacyPagination {
     const paginationUrlPrefix = filters === '' ? '/search/results?' : `/search/results?${filters}&`
 
     const paginationParams = pagination(
-      page.number + 1,
-      page.totalPages,
+      (page.number || 0) + 1,
+      page.totalPages || 0,
       paginationUrlPrefix,
       'moj',
-      page.totalElements,
-      page.size,
+      page.totalElements || 0,
+      page.size || 0,
     )
+    if (!paginationParams.results) paginationParams.results = { count: 0, from: 0, to: 0 }
     paginationParams.results.text = page.totalElements === 1 ? 'prisoner' : 'prisoners'
     return paginationParams
   }
