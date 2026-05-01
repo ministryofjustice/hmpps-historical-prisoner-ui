@@ -52,10 +52,10 @@ function validateAddressData(form: PrisonerSearchForm, errors: HmppsError[]) {
   }
 }
 
-export default function validate(form: PrisonerSearchForm): HmppsError[] {
+export default function validate(form?: PrisonerSearchForm): HmppsError[] {
   const errors: HmppsError[] = []
 
-  switch (form.searchType) {
+  switch (form?.searchType) {
     case 'name':
       validateNameData(form, errors)
       break

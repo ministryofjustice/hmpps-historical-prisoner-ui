@@ -31,6 +31,7 @@ export default class SearchController {
     if (!req.session.prisonerSearchForm) {
       return res.render('pages/search', { form: { searchType: 'name' } })
     }
+    if (!req.session.searchParams) req.session.searchParams = {}
 
     const { page } = req.query
     req.session.searchParams.filters = this.getFiltersFromQuery(req)
@@ -38,20 +39,20 @@ export default class SearchController {
     if (page) {
       req.session.searchParams.page = Number(page) - 1
     }
-    const pagedResults: PagedModelPrisonerSearchDto = await this.doSearch(req, res)
+    const { page: resultsPage, content }: PagedModelPrisonerSearchDto = await this.doSearch(req, res)
     await this.auditService.logPageView(Page.SEARCH_RESULTS, {
       who: res.locals.user.username,
       subjectId: `Search by ${req.session.prisonerSearchForm.searchType}`,
-      details: { prisonNumbers: pagedResults.content.map(prisoner => prisoner.prisonNumber) },
+      details: { prisonNumbers: content?.map(prisoner => prisoner.prisonNumber) },
       correlationId: req.id,
     })
-    const paginationParams = this.getPaginationParams(req, pagedResults.page, this.getSessionFilterString(req))
+    const paginationParams = this.getPaginationParams(req, resultsPage, this.getSessionFilterString(req))
 
     if (req.session.prisonerSearchForm.searchType === undefined) {
       req.session.prisonerSearchForm = { searchType: 'name' }
     }
     return res.render('pages/search', {
-      searchResults: pagedResults.content.map(prisoner => {
+      searchResults: content?.map(prisoner => {
         return { ...prisoner, shortlisted: req.session.shortlist?.includes(prisoner.prisonNumber) }
       }),
       form: req.session.prisonerSearchForm,
@@ -79,37 +80,38 @@ export default class SearchController {
     return res.redirect('/search/results')
   }
 
-  async doSearch(req: Request, _: Response): Promise<PagedModelPrisonerSearchDto> {
+  async doSearch(req: Request, res: Response): Promise<PagedModelPrisonerSearchDto> {
     const { prisonerSearchForm } = req.session
+    const searchParams = req.session.searchParams || {}
 
-    switch (prisonerSearchForm.searchType) {
+    switch (prisonerSearchForm?.searchType) {
       case 'name':
         return this.historicalPrisonerService.findPrisonersByName(
-          req.user.token,
-          SearchController.toPrisonersByName(prisonerSearchForm, req.session.searchParams.filters),
-          req.session.searchParams.page,
+          res.locals.user.token,
+          SearchController.toPrisonersByName(prisonerSearchForm, searchParams.filters),
+          searchParams.page,
         )
       case 'identifier':
         return this.historicalPrisonerService.findPrisonersByIdentifiers(
-          req.user.token,
-          SearchController.toPrisonersByIdentifiers(prisonerSearchForm, req.session.searchParams.filters),
-          req.session.searchParams.page,
+          res.locals.user.token,
+          SearchController.toPrisonersByIdentifiers(prisonerSearchForm, searchParams.filters),
+          searchParams.page,
         )
       case 'address':
         return this.historicalPrisonerService.findPrisonersByAddressTerms(
-          req.user.token,
-          SearchController.toPrisonersByAddress(prisonerSearchForm, req.session.searchParams.filters),
-          req.session.searchParams.page,
+          res.locals.user.token,
+          SearchController.toPrisonersByAddress(prisonerSearchForm, searchParams.filters),
+          searchParams.page,
         )
       default:
-        throw new Error(`Unknown search type: ${prisonerSearchForm.searchType}`)
+        throw new Error(`Unknown search type: ${prisonerSearchForm?.searchType}`)
     }
   }
 
   getSessionFilterString(req: Request): string {
     const searchParams = new URLSearchParams()
 
-    req.session.searchParams.filters?.forEach(entry => {
+    req.session.searchParams?.filters?.forEach(entry => {
       searchParams.append('filters', entry)
     })
     return searchParams?.toString() ?? ''
@@ -141,7 +143,7 @@ export default class SearchController {
     return paginationParams
   }
 
-  private static toPrisonersByName(form: PrisonerSearchForm, filters: string[]): FindPrisonersByName {
+  private static toPrisonersByName(form: PrisonerSearchForm, filters?: string[] | null): FindPrisonersByName {
     const hasDateField = form.dobDay && form.dobMonth && form.dobYear
     let gender: string
     if (filters) {
@@ -163,7 +165,10 @@ export default class SearchController {
     }
   }
 
-  private static toPrisonersByIdentifiers(form: PrisonerSearchForm, filters: string[]): FindPrisonersByIdentifiers {
+  private static toPrisonersByIdentifiers(
+    form: PrisonerSearchForm,
+    filters?: string[] | null,
+  ): FindPrisonersByIdentifiers {
     return {
       prisonNumber: form.prisonNumber,
       pnc: form.pncNumber,
@@ -175,7 +180,7 @@ export default class SearchController {
     }
   }
 
-  private static toPrisonersByAddress(form: PrisonerSearchForm, filters: string[]): FindPrisonersByAddress {
+  private static toPrisonersByAddress(form: PrisonerSearchForm, filters?: string[] | null): FindPrisonersByAddress {
     return {
       addressTerms: form.address,
 

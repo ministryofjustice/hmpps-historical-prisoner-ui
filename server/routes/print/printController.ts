@@ -56,7 +56,7 @@ export default class PrintController extends AbstractDetailController {
   }
 
   async renderPdf(req: Request, res: Response): Promise<void> {
-    const prisonerDetail = await this.getPrisonerDetail(req)
+    const prisonerDetail = await this.getPrisonerDetail(req, res)
     await this.auditService.logPageView(Page.PRINT, {
       who: res.locals.user.username,
       subjectId: prisonerDetail.prisonNumber,
@@ -82,7 +82,7 @@ export default class PrintController extends AbstractDetailController {
   }
 
   async renderView(req: Request, res: Response, pageData?: PageData): Promise<void> {
-    const prisonerDetail = await this.getPrisonerDetail(req)
+    const prisonerDetail = await this.getPrisonerDetail(req, res)
     res.render('pages/print', { summary: prisonerDetail.summary, items: itemsWithAll, ...pageData })
   }
 }

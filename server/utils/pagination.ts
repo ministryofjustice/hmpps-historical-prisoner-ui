@@ -84,8 +84,8 @@ export function pagination(
   pageCount: number,
   hrefPrefix: string,
   component: 'govuk' | 'moj' = 'govuk',
-  resultCount: number = undefined,
-  resultsPerPage: number = undefined,
+  resultCount?: number,
+  resultsPerPage?: number,
 ): Pagination | LegacyPagination {
   const params: Pagination = {}
 
@@ -162,7 +162,7 @@ export function pagination(
   return params
 }
 
-function legacyResults(page: number, resultCount: number, resultsPerPage: number): LegacyPaginationResults {
+function legacyResults(page: number, resultCount?: number, resultsPerPage?: number): LegacyPaginationResults {
   if (resultsPerPage < 1) {
     throw new Error('Invalid resultsPerPage')
   }
