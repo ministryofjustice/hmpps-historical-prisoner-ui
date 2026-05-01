@@ -1,6 +1,6 @@
 import logger from '../../logger'
 
-export function formatDate(date: string): string {
+export function formatDate(date?: string | null): string {
   if (!date) return ''
   try {
     return new Intl.DateTimeFormat(['en-GB']).format(new Date(date))

@@ -11,6 +11,7 @@ import { HmppsUser } from '../../interfaces/hmppsUser'
 import setUpWebSession from '../../middleware/setUpWebSession'
 import HmppsAuditClient from '../../data/hmppsAuditClient'
 import HistoricalPrisonerService from '../../services/historicalPrisonerService'
+import HistoricalPrisonerApiClient from '../../data/historicalPrisonerApiClient'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/historicalPrisonerService')
@@ -66,7 +67,9 @@ export function appWithAllRoutes({
   production = false,
   services = {
     auditService: new AuditService({} as HmppsAuditClient) as jest.Mocked<AuditService>,
-    historicalPrisonerService: new HistoricalPrisonerService(null) as jest.Mocked<HistoricalPrisonerService>,
+    historicalPrisonerService: new HistoricalPrisonerService(
+      {} as HistoricalPrisonerApiClient,
+    ) as jest.Mocked<HistoricalPrisonerService>,
   },
   userSupplier = () => user,
 }: {

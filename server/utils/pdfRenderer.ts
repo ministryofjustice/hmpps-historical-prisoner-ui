@@ -21,7 +21,7 @@ export function pdfRenderer(client: GotenbergClient) {
       if (process.env.NODE_ENV !== 'test') {
         logger.error(e, 'Could not read asset css file')
       }
-      return null
+      return ''
     }
   }
   return (_req: Request, res: Response, next: NextFunction) => {

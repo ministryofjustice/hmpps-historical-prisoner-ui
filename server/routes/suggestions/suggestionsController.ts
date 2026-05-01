@@ -5,10 +5,12 @@ export default class SuggestionsController {
   constructor() {}
 
   getSuggestions(req: Request, res: Response) {
+    if (!req.session.prisonerSearchForm) req.session.prisonerSearchForm = { searchType: 'name' }
     return res.render('pages/suggestion', { suggestions: getSearchSuggestions(req.session.prisonerSearchForm) })
   }
 
   applySuggestions(req: Request, res: Response) {
+    if (!req.session.prisonerSearchForm) req.session.prisonerSearchForm = { searchType: 'name' }
     if (req.query.firstName !== undefined) {
       req.session.prisonerSearchForm.firstName = req.query.firstName as string
     }
