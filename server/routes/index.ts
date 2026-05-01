@@ -11,7 +11,7 @@ import suggestionsRoutes from './suggestions/suggestionsRouter'
 export default function routes({ auditService, historicalPrisonerService }: Services): Router {
   const router = Router()
 
-  router.get('/', async (_req, res, _next) => {
+  router.get('/', async (_req, res) => {
     return res.redirect('/search')
   })
 

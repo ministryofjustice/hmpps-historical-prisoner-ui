@@ -11,7 +11,7 @@ export default function routes(
 ): Router {
   const comparisonController = new ComparisonController(historicalPrisonerService, auditService)
 
-  router.get('/comparison', async (req, res, next) => comparisonController.getComparisonDetail(req, res))
+  router.get('/comparison', async (req, res) => comparisonController.getComparisonDetail(req, res))
   router.post('/comparison/addToShortlist', async (req, res) => comparisonController.addToShortlist(req, res))
 
   return router

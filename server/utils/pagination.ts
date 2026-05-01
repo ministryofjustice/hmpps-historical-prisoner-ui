@@ -110,7 +110,7 @@ export function pagination(
   } else {
     pages = [1, 2, 3, 4].slice(0, page)
   }
-  const maxPage = Math.max(page, pages.at(-1))
+  const maxPage = Math.max(page, pages.at(-1) || 0)
   if (maxPage === pageCount - 1) {
     pages.push(pageCount)
   } else if (maxPage === pageCount - 2) {
@@ -150,10 +150,10 @@ export function pagination(
       }),
       results: legacyResults(page, resultCount, resultsPerPage),
     }
-    if ('previous' in params) {
+    if (params.previous) {
       legacyPagination.previous = { ...params.previous, text: 'Previous' }
     }
-    if ('next' in params) {
+    if (params.next) {
       legacyPagination.next = { ...params.next, text: 'Next' }
     }
     return legacyPagination
@@ -163,12 +163,12 @@ export function pagination(
 }
 
 function legacyResults(page: number, resultCount?: number, resultsPerPage?: number): LegacyPaginationResults {
-  if (resultsPerPage < 1) {
+  if (!resultsPerPage || resultsPerPage < 1) {
     throw new Error('Invalid resultsPerPage')
   }
   return {
-    count: resultCount,
+    count: resultCount || 0,
     from: resultCount === 0 ? 0 : resultsPerPage * (page - 1) + 1,
-    to: Math.min(resultsPerPage * page, resultCount),
+    to: Math.min(resultsPerPage * page, resultCount || 0),
   }
 }
