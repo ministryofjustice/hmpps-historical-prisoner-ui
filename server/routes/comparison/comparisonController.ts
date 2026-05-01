@@ -12,7 +12,7 @@ export default class ComparisonController {
 
   async getComparisonDetail(req: Request, res: Response) {
     logger.debug('GET /comparison')
-    const prisoners: PrisonerDetailDto[] = await this.getPrisonerDetail(req)
+    const prisoners: PrisonerDetailDto[] = await this.getPrisonerDetail(req, res)
     await this.auditService.logPageView(Page.COMPARISON, {
       who: res.locals.user.username,
       subjectId: prisoners.map(({ prisonNumber }) => prisonNumber).join(','),
@@ -24,13 +24,13 @@ export default class ComparisonController {
     return res.render('pages/comparison', { prisoners })
   }
 
-  async getPrisonerDetail(req: Request): Promise<PrisonerDetailDto[]> {
+  async getPrisonerDetail(req: Request, res: Response): Promise<PrisonerDetailDto[]> {
     const { shortlist } = req.session
     const results = []
 
     if (shortlist && shortlist.length <= 3) {
       const promises = shortlist.map(prisonerNo =>
-        this.historicalPrisonerService.getPrisonerDetail(req.user.token, prisonerNo),
+        this.historicalPrisonerService.getPrisonerDetail(res.locals.user.token, prisonerNo),
       )
       results.push(...(await Promise.all(promises)))
     }

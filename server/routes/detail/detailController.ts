@@ -12,7 +12,7 @@ export default class DetailController extends AbstractDetailController {
   }
 
   async getDetail(req: Request, res: Response): Promise<void> {
-    const prisonerDetail = await this.getPrisonerDetail(req)
+    const prisonerDetail = await this.getPrisonerDetail(req, res)
     await this.auditService.logPageView(Page.DETAIL, {
       who: res.locals.user.username,
       subjectId: prisonerDetail.prisonNumber,

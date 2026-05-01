@@ -27,13 +27,12 @@ describe('Print controller', () => {
   beforeEach(() => {
     jest.resetAllMocks()
     req = {
-      user: { token: 'token' },
       session: {},
       body: {},
       query: {},
     } as unknown as Request
     res = {
-      locals: { user: { username: 'user' } },
+      locals: { user: { username: 'user', token: 'token' } },
       render: jest.fn(),
       redirect: jest.fn(),
       status: jest.fn(),

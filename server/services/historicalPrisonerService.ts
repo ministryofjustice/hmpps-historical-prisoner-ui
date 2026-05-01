@@ -13,7 +13,7 @@ export default class HistoricalPrisonerService {
   async findPrisonersByName(
     token: string,
     prisonersByNameForm: FindPrisonersByName,
-    page: number = undefined,
+    page?: number,
   ): Promise<PagedModelPrisonerSearchDto> {
     return this.apiClient.findPrisonersByName(token, prisonersByNameForm, page)
   }
@@ -21,7 +21,7 @@ export default class HistoricalPrisonerService {
   async findPrisonersByIdentifiers(
     token: string,
     prisonersByIdentifiersForm: FindPrisonersByIdentifiers,
-    page: number = undefined,
+    page?: number,
   ): Promise<PagedModelPrisonerSearchDto> {
     return this.apiClient.findPrisonersByIdentifiers(token, prisonersByIdentifiersForm, page)
   }
@@ -29,7 +29,7 @@ export default class HistoricalPrisonerService {
   async findPrisonersByAddressTerms(
     token: string,
     prisonersByAddress: FindPrisonersByAddress,
-    page: number = undefined,
+    page?: number,
   ): Promise<PagedModelPrisonerSearchDto> {
     return this.apiClient.findPrisonersByAddressTerms(token, prisonersByAddress, page)
   }
