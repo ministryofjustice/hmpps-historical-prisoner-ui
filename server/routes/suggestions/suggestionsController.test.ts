@@ -30,9 +30,27 @@ describe('Suggestions controller', () => {
 
       expect(res.render).toHaveBeenCalledWith('pages/suggestion', { suggestions: [] })
     })
+
+    it('should render the suggestions page even when no search form', () => {
+      controller.getSuggestions(req, res)
+
+      expect(res.render).toHaveBeenCalledWith('pages/suggestion', { suggestions: [] })
+      expect(req.session.prisonerSearchForm).toEqual({ searchType: 'name' })
+    })
   })
 
   describe('applySuggestions', () => {
+    it('should apply the suggestions even if no search form', () => {
+      req.query = { firstName: 'Smith', lastName: 'John' }
+      controller.applySuggestions(req, res)
+
+      expect(req.session.prisonerSearchForm).toEqual({
+        searchType: 'name',
+        firstName: 'Smith',
+        lastName: 'John',
+      })
+      expect(res.redirect).toHaveBeenCalledWith('/search/results')
+    })
     it('should re-render the search page with new first name', () => {
       req.session.prisonerSearchForm = { searchType: 'name', firstName: 'James', lastName: 'Smith', age: '20-25' }
       req.query = { firstName: 'Smith', lastName: 'John' }

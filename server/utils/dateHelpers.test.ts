@@ -9,7 +9,7 @@ describe('formatDate', () => {
     ['Invalid date string', 'invalid-date', 'invalid-date'],
     ['Date with different format', '15-10-2023', '15-10-2023'],
     ['Date with slashes', '15/10/2023', '15/10/2023'],
-  ])('%s formatDate(%s, %s)', (_: string, date: string, expected: string) => {
+  ])('%s formatDate(%s, %s)', (_: string, date: string | null, expected: string) => {
     expect(formatDate(date)).toEqual(expected)
   })
 })

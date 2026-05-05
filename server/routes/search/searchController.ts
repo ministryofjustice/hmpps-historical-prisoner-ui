@@ -39,7 +39,7 @@ export default class SearchController {
     if (page) {
       req.session.searchParams.page = Number(page) - 1
     }
-    const { page: resultsPage, content }: PagedModelPrisonerSearchDto = await this.doSearch(req, res)
+    const { page: resultsPage = {}, content }: PagedModelPrisonerSearchDto = await this.doSearch(req, res)
     await this.auditService.logPageView(Page.SEARCH_RESULTS, {
       who: res.locals.user.username,
       subjectId: `Search by ${req.session.prisonerSearchForm.searchType}`,
@@ -146,7 +146,7 @@ export default class SearchController {
 
   private static toPrisonersByName(form: PrisonerSearchForm, filters?: string[] | null): FindPrisonersByName {
     const hasDateField = form.dobDay && form.dobMonth && form.dobYear
-    let gender: string
+    let gender: string | undefined
     if (filters) {
       if (filters.includes('male') && !filters.includes('female')) gender = 'M'
       else if (!filters.includes('male') && filters.includes('female')) gender = 'F'
@@ -156,7 +156,7 @@ export default class SearchController {
       forename: form.firstName,
       surname: form.lastName,
       dateOfBirth: hasDateField
-        ? [form.dobYear, form.dobMonth.padStart(2, '0'), form.dobDay.padStart(2, '0')].join('-')
+        ? [form.dobYear, form.dobMonth?.padStart(2, '0'), form.dobDay?.padStart(2, '0')].join('-')
         : undefined,
       ageFrom: Number(form.age?.split('-')[0]) || Number(form.age) || undefined,
       ageTo: Number(form.age?.split('-')[1]) || undefined,
@@ -183,7 +183,7 @@ export default class SearchController {
 
   private static toPrisonersByAddress(form: PrisonerSearchForm, filters?: string[] | null): FindPrisonersByAddress {
     return {
-      addressTerms: form.address,
+      addressTerms: form.address || '',
 
       gender: undefined,
       hdc: filters?.includes('hdc') ? true : undefined,

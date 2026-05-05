@@ -4,7 +4,8 @@ import AuditService, { Page } from '../../services/auditService'
 import HmppsError from '../../interfaces/HmppsError'
 import AbstractDetailController from '../detail/abstractDetailController'
 
-type ItemType = { divider?: string; value?: string; text?: string; behaviour?: string }
+type ItemType = { value: string; text: string }
+type ItemTypeWithAll = { divider?: string; value?: string; text?: string; behaviour?: string }
 
 const items: ItemType[] = [
   { value: 'summary', text: 'Subject' },
@@ -18,11 +19,11 @@ const items: ItemType[] = [
   { value: 'aliases', text: 'Aliases' },
   { value: 'addresses', text: 'Addresses' },
 ]
-const orAll: ItemType[] = [
+const orAll: ItemTypeWithAll[] = [
   { divider: 'or' },
   { value: 'all', text: 'All, I would like all details', behaviour: 'exclusive' },
 ]
-const itemsWithAll = items.concat(orAll)
+const itemsWithAll: ItemTypeWithAll[] = [...items, ...orAll]
 
 type PageData = {
   errors?: HmppsError[]
@@ -75,10 +76,10 @@ export default class PrintController extends AbstractDetailController {
     )
   }
 
-  private getSections(req: Request) {
+  private getSections(req: Request): string[] {
     const { section } = req.query
     if (!section) return items.map(({ value }) => value)
-    return Array.isArray(section) ? section : [section]
+    return Array.isArray(section) ? section.map(value => value.toString()) : [section.toString()]
   }
 
   async renderView(req: Request, res: Response, pageData?: PageData): Promise<void> {
