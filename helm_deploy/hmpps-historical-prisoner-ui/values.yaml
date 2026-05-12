@@ -1,6 +1,7 @@
 generic-service:
   nameOverride: hmpps-historical-prisoner-ui
   productId: 'DPS065'
+  cronPrefixName: ui
   serviceAccountName: "hmpps-historical-prisoner"
 
   replicaCount: 4
