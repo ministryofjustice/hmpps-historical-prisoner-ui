@@ -11,6 +11,6 @@ dependencies:
     version: "1.17"
     repository: https://ministryofjustice.github.io/hmpps-helm-charts
   - name: generic-service
+    version: "3.16"
     alias: gotenberg
-    version: "3.8"
     repository: https://ministryofjustice.github.io/hmpps-helm-charts

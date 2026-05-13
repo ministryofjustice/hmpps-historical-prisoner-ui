@@ -84,6 +84,7 @@ generic-prometheus-alerts:
 
 gotenberg:
   nameOverride: gotenberg
+  cronPrefixName: gotenberg
   replicaCount: 4
 
   image:
