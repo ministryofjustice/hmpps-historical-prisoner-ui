@@ -10,6 +10,7 @@ generic-service:
     TOKEN_VERIFICATION_API_URL: "https://token-verification-api.prison.service.justice.gov.uk"
     COMPONENT_API_URL: https://frontend-components.hmpps.service.justice.gov.uk
     DPS_URL: https://digital.prison.service.justice.gov.uk
+    GOTENBERG_API_URL: 'http://hmpps-historical-prisoner-ui-gotenberg.hmpps-historical-prisoner-prod.svc.cluster.local'
     AUDIT_ENABLED: "true"
 
   allowlist:
