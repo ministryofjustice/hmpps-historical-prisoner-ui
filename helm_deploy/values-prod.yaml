@@ -17,3 +17,6 @@ generic-service:
     groups:
       - internal
       - prisons
+
+generic-prometheus-alerts:
+  alertSeverity: PROD_ALERTS_SEVERITY_LABEL
