@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
 import { PrisonerSearchForm } from 'express-session'
+import { AuditService } from '@ministryofjustice/hmpps-audit-client'
+
 import HistoricalPrisonerService from '../../services/historicalPrisonerService'
-import AuditService, { Page } from '../../services/auditService'
 import trimForm from '../../utils/trim'
 import searchValidator from './searchValidator'
 
@@ -14,6 +15,7 @@ import {
 } from '../../@types/historical-prisoner/historicalPrisonerApiTypes'
 import { LegacyPagination, pagination } from '../../utils/pagination'
 import getSearchSuggestions from '../../utils/suggestionHelpers'
+import Page from '../page'
 
 export default class SearchController {
   constructor(

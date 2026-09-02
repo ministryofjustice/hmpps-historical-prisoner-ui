@@ -14,7 +14,6 @@ generic-service:
     DPS_URL: https://digital-preprod.prison.service.justice.gov.uk
     GOTENBERG_API_URL: 'http://hmpps-historical-prisoner-ui-gotenberg.hmpps-historical-prisoner-preprod.svc.cluster.local'
     ENVIRONMENT_NAME: PRE-PRODUCTION
-    AUDIT_ENABLED: "true"
 
   scheduledDowntime:
     enabled: true

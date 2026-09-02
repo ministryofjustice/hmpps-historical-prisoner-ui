@@ -1,4 +1,4 @@
-import AuditService from '../services/auditService'
+import { AuditService } from '@ministryofjustice/hmpps-audit-client'
 
 const auditServiceMock = (): AuditService =>
   ({

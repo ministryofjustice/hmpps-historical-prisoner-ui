@@ -1,19 +1,17 @@
 import express, { Express } from 'express'
 import { NotFound } from 'http-errors'
+import { AuditService } from '@ministryofjustice/hmpps-audit-client'
 
-import { randomUUID } from 'crypto'
 import routes from '../index'
 import nunjucksSetup from '../../utils/nunjucksSetup'
 import errorHandler from '../../errorHandler'
 import type { Services } from '../../services'
-import AuditService from '../../services/auditService'
 import { HmppsUser } from '../../interfaces/hmppsUser'
 import setUpWebSession from '../../middleware/setUpWebSession'
-import HmppsAuditClient from '../../data/hmppsAuditClient'
 import HistoricalPrisonerService from '../../services/historicalPrisonerService'
 import HistoricalPrisonerApiClient from '../../data/historicalPrisonerApiClient'
 
-jest.mock('../../services/auditService')
+jest.mock('@ministryofjustice/hmpps-audit-client')
 jest.mock('../../services/historicalPrisonerService')
 
 export const user: HmppsUser = {
@@ -51,7 +49,7 @@ function appSetup(services: Services, production: boolean, userSupplier: () => H
     next()
   })
   app.use((req, _res, next) => {
-    req.id = randomUUID()
+    req.id = '4d0fd4da-ecc1-454d-8308-cdee6b8b91f7'
     next()
   })
   app.use(express.json())
@@ -66,7 +64,7 @@ function appSetup(services: Services, production: boolean, userSupplier: () => H
 export function appWithAllRoutes({
   production = false,
   services = {
-    auditService: new AuditService({} as HmppsAuditClient) as jest.Mocked<AuditService>,
+    auditService: new AuditService({} as never) as jest.Mocked<AuditService>,
     historicalPrisonerService: new HistoricalPrisonerService(
       {} as HistoricalPrisonerApiClient,
     ) as jest.Mocked<HistoricalPrisonerService>,

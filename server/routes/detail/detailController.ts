@@ -1,7 +1,9 @@
 import { Request, Response } from 'express'
+import { AuditService } from '@ministryofjustice/hmpps-audit-client'
+
 import HistoricalPrisonerService from '../../services/historicalPrisonerService'
-import AuditService, { Page } from '../../services/auditService'
 import AbstractDetailController from './abstractDetailController'
+import Page from '../page'
 
 export default class DetailController extends AbstractDetailController {
   constructor(

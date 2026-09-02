@@ -1,8 +1,10 @@
 import { Request, Response } from 'express'
+import { AuditService } from '@ministryofjustice/hmpps-audit-client'
+
 import HistoricalPrisonerService from '../../services/historicalPrisonerService'
-import AuditService, { Page } from '../../services/auditService'
 import { PrisonerDetailDto } from '../../@types/historical-prisoner/historicalPrisonerApiTypes'
 import logger from '../../../logger'
+import Page from '../page'
 
 export default class ComparisonController {
   constructor(
