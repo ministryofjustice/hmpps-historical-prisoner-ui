@@ -7,6 +7,7 @@ generic-service:
     className: modsec-non-prod
 
   env:
+    LOG_LEVEL: 'debug'
     INGRESS_URL: "https://historical-prisoner-dev.prison.service.justice.gov.uk"
     HMPPS_AUTH_URL: "https://sign-in-dev.hmpps.service.justice.gov.uk/auth"
     HISTORICAL_PRISONER_API_URL: "https://historical-prisoner-api-dev.prison.service.justice.gov.uk"
@@ -15,7 +16,6 @@ generic-service:
     DPS_URL: https://digital-dev.prison.service.justice.gov.uk
     GOTENBERG_API_URL: 'http://hmpps-historical-prisoner-ui-gotenberg.hmpps-historical-prisoner-dev.svc.cluster.local'
     ENVIRONMENT_NAME: DEV
-    AUDIT_ENABLED: "true"
     NODE_USE_ENV_PROXY: "1"
     APPLICATION_INSIGHTS_NO_STATSBEAT: "true"
 

@@ -1,8 +1,11 @@
 import { Request, Response } from 'express'
+import { AuditService } from '@ministryofjustice/hmpps-audit-client'
+
 import HistoricalPrisonerService from '../../services/historicalPrisonerService'
-import AuditService, { Page } from '../../services/auditService'
 import HmppsError from '../../interfaces/HmppsError'
 import AbstractDetailController from '../detail/abstractDetailController'
+
+import Page from '../page'
 
 type ItemType = { value: string; text: string }
 type ItemTypeWithAll = { divider?: string; value?: string; text?: string; behaviour?: string }

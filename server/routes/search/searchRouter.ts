@@ -1,6 +1,6 @@
 import type { Router } from 'express'
+import { AuditService } from '@ministryofjustice/hmpps-audit-client'
 
-import AuditService from '../../services/auditService'
 import HistoricalPrisonerService from '../../services/historicalPrisonerService'
 import SearchController from './searchController'
 
