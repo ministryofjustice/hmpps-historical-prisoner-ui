@@ -35,7 +35,6 @@ generic-service:
 
 generic-prometheus-alerts:
   businessHoursOnly: true
-  alertSeverity: syscon-nonprod
 
 gotenberg:
   replicaCount: 2
